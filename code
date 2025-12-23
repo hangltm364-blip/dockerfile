@@ -1,23 +1,27 @@
 # Lavalink v4 base image (alpine nhỏ gọn)
 FROM ghcr.io/lavalink-devs/lavalink:4-alpine
 
-# Cài wget để tải plugin (alpine)
+# Bạn có thể đổi version plugin ở đây khi cần update
+ARG YT_PLUGIN_VERSION=1.16.0
+
+# Cài wget để tải plugin + tạo thư mục plugins
 USER root
 RUN apk add --no-cache wget \
   && mkdir -p /opt/Lavalink/plugins
 
-# youtube-source plugin (YouTube Plugin) version 1.16.0 (Nov 03, 2025)
-# Source: Maven Central coordinates dev.lavalink.youtube:youtube-plugin:1.16.0
-RUN wget -O /opt/Lavalink/plugins/youtube-plugin-1.16.0.jar \
-  https://repo1.maven.org/maven2/dev/lavalink/youtube/youtube-plugin/1.16.0/youtube-plugin-1.16.0.jar
+# Tải youtube-source plugin từ Lavalink Maven repository
+RUN wget -O /opt/Lavalink/plugins/youtube-plugin-${YT_PLUGIN_VERSION}.jar \
+  https://maven.lavalink.dev/releases/dev/lavalink/youtube/youtube-plugin/${YT_PLUGIN_VERSION}/youtube-plugin-${YT_PLUGIN_VERSION}.jar
 
-# (Tuỳ chọn) tắt YouTube source mặc định (deprecated) để tránh dùng nhầm
-# Bạn có thể bật/tắt qua ENV khi deploy nếu muốn.
+# (Khuyến nghị) Tắt YouTube source mặc định (deprecated) để tránh dùng nhầm
 ENV LAVALINK_SERVER_SOURCES_YOUTUBE=false
 
-# Koyeb hay route qua 8080; giữ mặc định 8080 để khỏi lệch health-check.
+# Koyeb route/health-check dễ nhất với 8080
 ENV SERVER_ADDRESS=0.0.0.0
 ENV SERVER_PORT=8080
 
-# Trả về user mặc định của image (không bắt buộc nhưng tốt)
+# (Tuỳ chọn) Giới hạn heap cho instance yếu (bạn cũng có thể set trên Koyeb ENV thay vì để trong image)
+# ENV _JAVA_OPTIONS="-Xms128M -Xmx256M"
+
+# Trả lại user mặc định của image (an toàn hơn)
 USER 322
