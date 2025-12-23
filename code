@@ -1,0 +1,23 @@
+# Lavalink v4 base image (alpine nhỏ gọn)
+FROM ghcr.io/lavalink-devs/lavalink:4-alpine
+
+# Cài wget để tải plugin (alpine)
+USER root
+RUN apk add --no-cache wget \
+  && mkdir -p /opt/Lavalink/plugins
+
+# youtube-source plugin (YouTube Plugin) version 1.16.0 (Nov 03, 2025)
+# Source: Maven Central coordinates dev.lavalink.youtube:youtube-plugin:1.16.0
+RUN wget -O /opt/Lavalink/plugins/youtube-plugin-1.16.0.jar \
+  https://repo1.maven.org/maven2/dev/lavalink/youtube/youtube-plugin/1.16.0/youtube-plugin-1.16.0.jar
+
+# (Tuỳ chọn) tắt YouTube source mặc định (deprecated) để tránh dùng nhầm
+# Bạn có thể bật/tắt qua ENV khi deploy nếu muốn.
+ENV LAVALINK_SERVER_SOURCES_YOUTUBE=false
+
+# Koyeb hay route qua 8080; giữ mặc định 8080 để khỏi lệch health-check.
+ENV SERVER_ADDRESS=0.0.0.0
+ENV SERVER_PORT=8080
+
+# Trả về user mặc định của image (không bắt buộc nhưng tốt)
+USER 322
