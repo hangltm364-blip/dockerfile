@@ -7,7 +7,10 @@ lavalink:
     password: "youshallnotpass"
 
     sources:
-      youtube: false   # ❗ tắt source cũ
+      youtube: false   # ❗ tắt youtube cũ
+
+  plugins:
+    - dependency: "dev.lavalink.youtube:youtube-plugin:1.18.0"
 
 plugins:
   youtube:
