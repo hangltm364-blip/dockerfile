@@ -1,27 +1,46 @@
-# Lavalink v4 base image (alpine nhỏ gọn)
+# Lavalink v4 Alpine base
 FROM ghcr.io/lavalink-devs/lavalink:4-alpine
 
-# Bạn có thể đổi version plugin ở đây khi cần update
-ARG YT_PLUGIN_VERSION=1.16.0
+# ===============================
+# Youtube Plugin (LATEST FIX)
+# ===============================
 
-# Cài wget để tải plugin + tạo thư mục plugins
 USER root
+
 RUN apk add --no-cache wget \
-  && mkdir -p /opt/Lavalink/plugins
+    && mkdir -p /opt/Lavalink/plugins
 
-# Tải youtube-source plugin từ Lavalink Maven repository
-RUN wget -O /opt/Lavalink/plugins/youtube-plugin-${YT_PLUGIN_VERSION}.jar \
-  https://maven.lavalink.dev/releases/dev/lavalink/youtube/youtube-plugin/${YT_PLUGIN_VERSION}/youtube-plugin-${YT_PLUGIN_VERSION}.jar
+# ✅ luôn dùng bản mới nhất (fix YouTube 400)
+RUN wget -O /opt/Lavalink/plugins/youtube-plugin.jar \
+https://github.com/lavalink-devs/youtube-source/releases/latest/download/youtube-plugin.jar
 
-# (Khuyến nghị) Tắt YouTube source mặc định (deprecated) để tránh dùng nhầm
-ENV LAVALINK_SERVER_SOURCES_YOUTUBE=false
+# ===============================
+# Lavalink config
+# ===============================
 
-# Koyeb route/health-check dễ nhất với 8080
+# ✅ BẬT youtube source
+ENV LAVALINK_SERVER_SOURCES_YOUTUBE=true
+
+# bind port cho Koyeb
 ENV SERVER_ADDRESS=0.0.0.0
 ENV SERVER_PORT=8080
 
-# (Tuỳ chọn) Giới hạn heap cho instance yếu (bạn cũng có thể set trên Koyeb ENV thay vì để trong image)
-# ENV _JAVA_OPTIONS="-Xms128M -Xmx256M"
+# RAM safe cho Nano instance
+ENV _JAVA_OPTIONS="-Xms128M -Xmx512M"
 
-# Trả lại user mặc định của image (an toàn hơn)
+# ===============================
+# Youtube anti-block clients
+# ===============================
+
+ENV PLUGINS_YOUTUBE_ENABLED=true
+ENV PLUGINS_YOUTUBE_ALLOWDIRECTPLAYLISTIDS=true
+ENV PLUGINS_YOUTUBE_ALLOWDIRECTVIDEOIDS=true
+ENV PLUGINS_YOUTUBE_ALLOWSEARCH=true
+
+ENV PLUGINS_YOUTUBE_CLIENTS_0=WEB
+ENV PLUGINS_YOUTUBE_CLIENTS_1=ANDROID
+ENV PLUGINS_YOUTUBE_CLIENTS_2=MUSIC
+ENV PLUGINS_YOUTUBE_CLIENTS_3=TVHTML5EMBEDDED
+
+# quay lại user lavalink
 USER 322
