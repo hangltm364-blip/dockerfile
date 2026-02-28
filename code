@@ -1,25 +1,26 @@
 FROM ghcr.io/lavalink-devs/lavalink:4-alpine
 
+ARG CACHE_BUST=1
+
 USER root
 
 RUN apk add --no-cache wget \
-    && mkdir -p /opt/Lavalink/plugins
+ && mkdir -p /opt/Lavalink/plugins
 
 RUN wget -O /opt/Lavalink/plugins/youtube-plugin.jar \
 https://github.com/lavalink-devs/youtube-source/releases/download/1.18.0/youtube-plugin-1.18.0.jar
 
-# ⭐ QUAN TRỌNG
 ENV LAVALINK_PLUGINS_DIR=/opt/Lavalink/plugins
 
+# ❗ tắt youtube cũ
 ENV LAVALINK_SERVER_SOURCES_YOUTUBE=false
 
 ENV SERVER_ADDRESS=0.0.0.0
 ENV SERVER_PORT=8080
 
-ENV _JAVA_OPTIONS="-Xms128M -Xmx512M"
-
 ENV PLUGINS_YOUTUBE_ENABLED=true
 ENV PLUGINS_YOUTUBE_ALLOWSEARCH=true
+
 ENV PLUGINS_YOUTUBE_CLIENTS_0=WEB
 ENV PLUGINS_YOUTUBE_CLIENTS_1=ANDROID
 ENV PLUGINS_YOUTUBE_CLIENTS_2=MUSIC
