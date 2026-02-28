@@ -3,10 +3,6 @@ server:
   address: 0.0.0.0
 
 lavalink:
-  plugins:
-    - dependency: "dev.lavalink.youtube:youtube-plugin:1.18.0"
-      repository: "https://maven.lavalink.dev/releases"
-
   server:
     password: "youshallnotpass"
 
@@ -15,10 +11,11 @@ lavalink:
       soundcloud: true
       http: true
 
-    youtube:
-      enabled: true
-      allowSearch: true
-      allowDirectVideoIds: true
+plugins:
+  youtube:
+    enabled: true
+    allowSearch: true
+    allowDirectVideoIds: true
 
 logging:
   level:
