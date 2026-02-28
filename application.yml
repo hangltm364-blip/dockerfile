@@ -1,0 +1,22 @@
+server:
+  port: 8080
+  address: 0.0.0.0
+
+lavalink:
+  server:
+    password: "youshallnotpass"
+
+    sources:
+      youtube: false   # ❗ tắt source cũ
+
+plugins:
+  youtube:
+    enabled: true
+    allowSearch: true
+    allowDirectVideoIds: true
+
+    clients:
+      - WEB
+      - ANDROID
+      - MUSIC
+      - TVHTML5EMBEDDED
