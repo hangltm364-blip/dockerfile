@@ -3,23 +3,24 @@ server:
   address: 0.0.0.0
 
 lavalink:
+  plugins:
+    - dependency: "dev.lavalink.youtube:youtube-plugin:1.18.0"
+      repository: "https://maven.lavalink.dev/releases"
+
   server:
     password: "youshallnotpass"
 
     sources:
-      youtube: false   # ❗ tắt youtube cũ
+      youtube: false
+      soundcloud: true
+      http: true
 
-  plugins:
-    - dependency: "dev.lavalink.youtube:youtube-plugin:1.18.0"
+    youtube:
+      enabled: true
+      allowSearch: true
+      allowDirectVideoIds: true
 
-plugins:
-  youtube:
-    enabled: true
-    allowSearch: true
-    allowDirectVideoIds: true
-
-    clients:
-      - WEB
-      - ANDROID
-      - MUSIC
-      - TVHTML5EMBEDDED
+logging:
+  level:
+    root: INFO
+    lavalink: INFO
