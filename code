@@ -7,12 +7,13 @@ USER root
 RUN apk add --no-cache wget \
  && mkdir -p /opt/Lavalink/plugins
 
+# ✅ Maven repo (KHÔNG bị Koyeb block)
 RUN wget -O /opt/Lavalink/plugins/youtube-plugin.jar \
-https://github.com/lavalink-devs/youtube-source/releases/download/1.18.0/youtube-plugin-1.18.0.jar
+https://maven.lavalink.dev/releases/dev/lavalink/youtube/youtube-plugin/1.18.0/youtube-plugin-1.18.0.jar
 
 ENV LAVALINK_PLUGINS_DIR=/opt/Lavalink/plugins
 
-# ❗ tắt youtube cũ
+# tắt youtube source cũ
 ENV LAVALINK_SERVER_SOURCES_YOUTUBE=false
 
 ENV SERVER_ADDRESS=0.0.0.0
