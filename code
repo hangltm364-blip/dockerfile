@@ -1,36 +1,20 @@
-# Lavalink v4 Alpine base
 FROM ghcr.io/lavalink-devs/lavalink:4-alpine
-
-# ===============================
-# Youtube Plugin (LATEST FIX)
-# ===============================
 
 USER root
 
 RUN apk add --no-cache wget \
     && mkdir -p /opt/Lavalink/plugins
 
-# ✅ luôn dùng bản mới nhất (fix YouTube 400)
+# ✅ download đúng file tồn tại
 RUN wget -O /opt/Lavalink/plugins/youtube-plugin.jar \
-https://github.com/lavalink-devs/youtube-source/releases/latest/download/youtube-plugin.jar
+https://github.com/lavalink-devs/youtube-source/releases/download/1.18.0/youtube-plugin-1.18.0.jar
 
-# ===============================
-# Lavalink config
-# ===============================
-
-# ✅ BẬT youtube source
 ENV LAVALINK_SERVER_SOURCES_YOUTUBE=true
 
-# bind port cho Koyeb
 ENV SERVER_ADDRESS=0.0.0.0
 ENV SERVER_PORT=8080
 
-# RAM safe cho Nano instance
 ENV _JAVA_OPTIONS="-Xms128M -Xmx512M"
-
-# ===============================
-# Youtube anti-block clients
-# ===============================
 
 ENV PLUGINS_YOUTUBE_ENABLED=true
 ENV PLUGINS_YOUTUBE_ALLOWDIRECTPLAYLISTIDS=true
@@ -42,5 +26,4 @@ ENV PLUGINS_YOUTUBE_CLIENTS_1=ANDROID
 ENV PLUGINS_YOUTUBE_CLIENTS_2=MUSIC
 ENV PLUGINS_YOUTUBE_CLIENTS_3=TVHTML5EMBEDDED
 
-# quay lại user lavalink
 USER 322
